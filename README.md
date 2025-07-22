@@ -1,4 +1,4 @@
- 100 Verified Facts About Chakka (Jackfruit) 🌴
+ ##100 Verified Facts About Chakka (Jackfruit) 🌴
 
 This project compiles **verified facts** about **Chakka (Jackfruit)** in Malayalam, designed for **educational and cultural enrichment**. Whether you're a student, teacher, researcher, or food enthusiast, this resource offers rich insights into Kerala's beloved fruit.
 
