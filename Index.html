@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Chakka Fact Generator</title>
+    <!-- Internal CSS for styling the web page -->
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Full viewport height */
+            margin: 0;
+            background-color: #282c34; /* Dark background color */
+            color: #e0e0e0; /* Light text color */
+            text-align: center;
+            padding: 20px; /* Add some padding for smaller screens */
+            box-sizing: border-box; /* Include padding in element's total width and height */
+        }
+
+        .container {
+            background-color: #3a4049; /* Slightly lighter dark background for container */
+            padding: 40px;
+            border-radius: 15px; /* Rounded corners for the container */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* Soft shadow for depth */
+            max-width: 600px; /* Maximum width for the container */
+            width: 100%; /* Make container responsive */
+            transform: scale(0.95); /* Slightly scale down initially */
+            transition: transform 0.3s ease-in-out; /* Smooth transition for hover effect */
+        }
+
+        .container:hover {
+            transform: scale(1); /* Scale up on hover */
+        }
+
+        h1 {
+            color: #fce83a; /* Jackfruit yellow color for heading */
+            margin-bottom: 30px;
+            font-size: 2.2em; /* Larger font size for heading */
+            letter-spacing: 1px; /* Spacing between letters */
+            word-wrap: break-word; /* Ensure long words break */
+        }
+
+        #factDisplay {
+            background-color: #4a5059; /* Background for fact display area */
+            padding: 25px;
+            border-radius: 10px; /* Rounded corners for fact display */
+            margin-bottom: 30px;
+            font-size: 1.3em; /* Font size for facts */
+            font-weight: 500; /* Medium font weight */
+            min-height: 80px; /* Ensure minimum height for display area */
+            display: flex; /* Use flexbox for centering text vertically */
+            justify-content: center; /* Center text horizontally */
+            align-items: center; /* Center text vertically */
+            line-height: 1.5; /* Line height for readability */
+            word-wrap: break-word; /* Ensure long facts break */
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px; /* Space between buttons */
+            margin-top: 20px; /* Space above buttons */
+        }
+
+        button {
+            background-color: #fce83a; /* Jackfruit yellow for button */
+            color: #282c34; /* Dark text for button */
+            border: none; /* No border */
+            padding: 15px 30px;
+            font-size: 1.1em; /* Font size for button text */
+            font-weight: bold; /* Bold text for button */
+            border-radius: 8px; /* Rounded corners for button */
+            cursor: pointer; /* Pointer cursor on hover */
+            transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions for hover/active */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for button */
+        }
+
+        button:hover {
+            background-color: #e0d02b; /* Slightly darker yellow on hover */
+            transform: translateY(-2px); /* Lift button slightly on hover */
+        }
+
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Responsive adjustments for smaller screens */
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            #factDisplay {
+                font-size: 1.1em;
+                padding: 20px;
+            }
+
+            .button-group {
+                flex-direction: column; /* Stack buttons vertically on small screens */
+                gap: 10px;
+            }
+
+            button {
+                padding: 12px 25px;
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="mainHeading">Did you know about Chakka?</h1>
+        <p id="factDisplay">Click the button for a fun fact!</p>
+        <div class="button-group">
+            <button id="generateFactBtn">New Chakka Fact</button>
+            <button id="toggleLanguageBtn">ഭാഷ മാറ്റുക (Switch Language)</button>
+        </div>
+    </div>
+
+    <!-- Internal JavaScript for dynamic functionality -->
+    <script>
+        // English facts about Jackfruit (Chakka)
+        const englishFacts = [
+            "Jackfruit is the largest tree-borne fruit in the world.",
+            "A single jackfruit can weigh up to 55 kilograms (120 pounds).",
+            "Jackfruit is rich in vitamin C, potassium, and dietary fiber.",
+            "Every part of the jackfruit tree is useful, from fruit to timber.",
+            "Young jackfruit is often used as a meat substitute due to its texture.",
+            "Jackfruit seeds are edible and nutritious when cooked.",
+            "In Kerala, jackfruit is called 'Chakka' and is very popular.",
+            "Jackfruit belongs to the mulberry and fig family, Moraceae.",
+            "Jackfruit is native to South and Southeast Asia.",
+            "The jackfruit tree can live over 100 years.",
+            "Jackfruit trees start fruiting 3 to 8 years after planting.",
+            "Jackfruit wood is durable and used in furniture and musical instruments.",
+            "The sticky latex from jackfruit can irritate the skin.",
+            "Jackfruit trees can produce 100 to 200 fruits annually.",
+            "Ripe jackfruit is sweet and has a fruity aroma.",
+            "Unripe jackfruit is used in savory dishes.",
+            "Jackfruit seeds contain protein, potassium, and other nutrients.",
+            "Jackfruit helps in digestion due to its high fiber content.",
+            "Jackfruit is low in fat and cholesterol-free.",
+            "It contains antioxidants that help reduce inflammation.",
+            "Jackfruit is used in vegan diets as a meat alternative.",
+            "Kerala has traditional jackfruit dishes like Chakka Varattiyathu and Chakka Pradhaman.",
+            "Jackfruit chips are made by slicing and frying unripe jackfruit.",
+            "Jackfruit flour is used in diabetic-friendly diets.",
+            "Jackfruit leaves are sometimes used as eco-friendly plates.",
+            "The fruit’s skin is thick and not edible.",
+            "Jackfruit seeds can be roasted or boiled as snacks.",
+            "The latex can clog knives, so oil is applied before cutting.",
+            "Jackfruit is drought-tolerant once established.",
+            "The fruit has a high water content of about 73 to 76%.",
+            "Jackfruit is known as 'Kathal' in Hindi and 'Panasa' in Sanskrit.",
+            "Jackfruit farming is gaining global attention as a climate-resilient crop.",
+            "Jackfruit is the national fruit of Bangladesh.",
+            "Pectin in jackfruit helps in making jams and jellies.",
+            "Jackfruit pulp can be used in ice creams and milkshakes.",
+            "Jackfruit wood has a yellowish color.",
+            "Jackfruit leaves provide good shade due to their large size.",
+            "The fruit’s aroma gets stronger as it ripens.",
+            "Jackfruit seeds contain thiamine and riboflavin, important for energy.",
+            "Jackfruit is sometimes fermented to make alcoholic beverages.",
+            "Jackfruit bark is used in natural dye production.",
+            "Overconsumption of jackfruit may cause bloating due to fiber.",
+            "Jackfruit is considered a superfood due to its nutrient density.",
+            "Tender jackfruit is called 'Idichakka' in Malayalam.",
+            "Jackfruit is used in curries, biryani, and stir-fries in Kerala.",
+            "Jackfruit pulp is sweet when ripe and used in desserts.",
+            "Jackfruit leaves are used in some traditional ceremonies.",
+            "Jackfruit seeds, when dried, can be stored for months.",
+            "Jackfruit farming supports organic agriculture.",
+            "Chakka Thoran is a dry fry curry made with jackfruit and coconut.",
+            "Jackfruit is gluten-free and rich in fiber.",
+            "The fruit's outer skin is discarded after peeling.",
+            "Jackfruit contains vitamin A, supporting eye health.",
+            "Jackfruit pulp has a unique fruity aroma and flavor.",
+            "Jackfruit's family Moraceae includes figs and breadfruit.",
+            "Jackfruit wood is resistant to termites.",
+            "Jackfruit's latex can be used as natural glue.",
+            "Jackfruit trees have large, glossy leaves.",
+            "Jackfruit seeds may support gut health.",
+            "Jackfruit is used in many traditional Kerala sweets.",
+            "Jackfruit farming helps diversify income for farmers.",
+            "Jackfruit is harvested mostly during summer and monsoon.",
+            "Jackfruit can be eaten raw or cooked.",
+            "Jackfruit’s fruit wall is thick and fleshy.",
+            "Jackfruit is a rich source of carbohydrates.",
+            "Jackfruit is used in Ayurvedic medicine.",
+            "Jackfruit has anti-diabetic properties.",
+            "Jackfruit seeds are boiled to reduce toxicity.",
+            "Jackfruit is propagated by seeds or grafting.",
+            "Jackfruit is pollinated by insects and bats.",
+            "Jackfruit trees grow well in warm, humid climates.",
+            "Jackfruit is used in various culinary dishes worldwide.",
+            "Jackfruit cultivation supports biodiversity.",
+            "Jackfruit is a seasonal fruit available mainly from March to June.",
+            "Jackfruit’s flavor and texture vary between ripe and unripe stages.",
+            "Jackfruit is rich in antioxidants like lignans and isoflavones.",
+            "Jackfruit seeds have a nutty flavor.",
+            "Jackfruit is a sustainable crop with low input requirements.",
+            "Jackfruit has cultural significance in Kerala festivals.",
+            "Jackfruit pulp contains sugars like fructose and glucose.",
+            "Jackfruit cultivation helps in soil conservation.",
+            "Jackfruit is also called 'Tree Mutton' in Kerala due to its meat-like texture.",
+            "Jackfruit is used in baby food preparations in Kerala.",
+            "Jackfruit’s latex can cause allergic reactions in some people.",
+            "Jackfruit trees tolerate mild drought conditions.",
+            "Jackfruit is increasingly popular in vegan cooking globally.",
+            "Jackfruit contains minerals like magnesium and manganese.",
+            "Jackfruit leaves can be used as cattle fodder.",
+            "Jackfruit pulp can be frozen for later use.",
+            "Jackfruit wood is used for making traditional musical instruments.",
+            "Jackfruit is valued for its nutritional and economic importance.",
+            "Jackfruit seeds can be ground into flour for cooking.",
+            "Jackfruit farming contributes to food security.",
+            "Jackfruit has received a geographical indication (GI) tag in Kerala.",
+            "Jackfruit is used in making traditional Kerala pickles and preserves."
+        ];
+
+        // Malayalam facts about Jackfruit (Chakka)
+        const malayalamFacts = [
+            "ചക്ക ലോകത്തിലെ ഏറ്റവും വലിയ മരത്തിൽ വളരുന്ന പഴമാണ്.",
+            "ഒരു ഏകചക്ക 55 കിലോ (120 പൗണ്ട്) വരെ ഭാരമുള്ളതാകും.",
+            "ചക്ക, സി വിറ്റാമിൻ, പൊട്ടാസ്യം, dietary fiber എന്നിവയിൽ സമൃദ്ധമാണ്.",
+            "ചക്കമരത്തിന്റെ എല്ലാ ഭാഗങ്ങളും ഉൽപാദകമാണ്, പഴം മുതൽ മരത്തോപ്പില വരെ.",
+            "പച്ചയായ ചക്കയുടെ താളമുള്ള ഘടന കാരണം മാംസത്തിന് പകരം ഉപയോഗിക്കുന്നു.",
+            "ചക്കക്കുരു പാചകം ചെയ്ത് ഭക്ഷിക്കാവുന്നതും പോഷക സമൃദ്ധവുമാണ്.",
+            "കേരളത്തിൽ ചക്കയെ 'ചക്ക' എന്ന് വിളിക്കുന്നു, അത് വളരെ ജനപ്രിയമാണ്.",
+            "ചക്ക മുള്ളി, അത്താഴം കുടുംബത്തിൽ (Moraceae) പെടുന്നു.",
+            "ചക്ക ദക്ഷിണേന്ത്യയിലും തെക്കുകിഴക്കൻ ഏഷ്യയിലും സ്വദേശീയമാണ്.",
+            "ചക്കമരം 100 വർഷം വരെ ജീവിക്കും.",
+            "ചക്കമരം നടിയ്ക്ക് ശേഷം 3 മുതൽ 8 വരെയുള്ള വർഷങ്ങളിൽ പഴം നൽകാൻ തുടങ്ങും.",
+            "ചക്കമരത്തിന്റെ മരച്ചീനി ദൃഢവും ഫർണിച്ചറും സംഗീതോപകരണങ്ങൾക്കും ഉപയോഗിക്കുന്നു.",
+            "ചക്കപഴത്തിലെ ഇടയിൽ നിന്നുള്ള ചട്ടുകടല (latex) ത്വക്ക് കുഴപ്പമുണ്ടാക്കും.",
+            "ചക്കമരം വർഷം തോറും 100 മുതൽ 200 വരെ പഴം നൽകും.",
+            "പഴുത്ത ചക്ക മധുരവും പഴംപോലെ സുഗന്ധവുമുണ്ട്.",
+            "പച്ചയായ ചക്ക ഉണക്കിയ വിഭവങ്ങളിൽ ഉപയോഗിക്കുന്നു.",
+            "ചക്കക്കുരു പ്രോട്ടീൻ, പൊട്ടാസ്യം, മറ്റു പോഷകങ്ങൾ നിറഞ്ഞതാണ്.",
+            "ചക്ക ദഹനത്തിന് സഹായിക്കുന്ന dietary fiber കൂടുതലാണ്.",
+            "ചക്കയിൽ കൊഴുപ്പ് കുറവും കൊളസ്ട്രോൾ ഇല്ലാതുമുണ്ട്.",
+            "ചക്കയിൽ ഉള്ള ആന്റിഓക്സിഡന്റുകൾ ചൊറിച്ചിലും കുറയ്ക്കാൻ സഹായിക്കുന്നു.",
+            "ചക്ക വെഗൻ ഭക്ഷണത്തിൽ മാംസത്തിന് പകരം ഉപയോഗിക്കുന്നു.",
+            "കേരളത്തിൽ ചക്ക വരട്ടിയത്ത്, പ്രദമൻ പോലുള്ള പരമ്പരാഗത വിഭവങ്ങൾ ഉണ്ട്.",
+            "പച്ചയായ ചക്ക ചിപ്സ് വറുത്ത് ഉണ്ടാക്കുന്നു.",
+            "ചക്ക മാവു പിണ്ഡം പഞ്ചസാരരഹിത ഭക്ഷണങ്ങളിൽ ഉപയോഗിക്കുന്നു.",
+            "ചക്ക ഇലകൾ ഇക്കോ-ഫ്രണ്ട്ലി പ്ലേറ്റുകൾ ആയി ഉപയോഗിക്കുന്നു.",
+            "പഴത്തിന്റെ തോൽ കട്ടിയുള്ളതും ഭക്ഷിക്കാനാവാത്തതും ആണ്.",
+            "ചക്കക്കുരു വറുത്ത് ഭക്ഷണത്തിൻറെ സ്നേഹപ്രദമായ നക്ഷത്രമാണ്.",
+            "ചക്കപഴത്തിലെ ചട്ടുകടല മുറിക്കുമ്പോൾ കത്തി തടയാൻ എണ്ണ ഉപയോഗിക്കുന്നു.",
+            "ചക്കമരം സ്ഥാപിച്ചതിനു ശേഷം വരണ്ട കാലാവസ്ഥയ്ക്ക് താങ്ങാനാകും.",
+            "ചക്ക പഴത്തിൽ 73 മുതൽ 76 ശതമാനം വരെ വെള്ളമുണ്ട്.",
+            "ചക്കയ്ക്ക് ഹിന്ദിയിൽ 'കഥൽ', സംസ്കൃതത്തിൽ 'പനസ' എന്നാണ് വിളിക്കുന്നത്.",
+            "ചക്ക കൃഷി കാലാവസ്ഥ മാറ്റത്തിനെതിരെ ശക്തമായ കൃഷിയാകുന്നു.",
+            "ബംഗ്ലാദേശിന്റെ ദേശീയ പഴം ചക്കയാണ്.",
+            "ചക്കയിലെ പകുതി ജാം, ജെല്ലി തുടങ്ങിയവയിൽ സഹായകമായ പക്ടിൻ ഉണ്ട്.",
+            "ചക്കപഴം ഐസ്‌ക്രീം, മിൽക്ക്‌ഷേക്ക് എന്നിവയിൽ ഉപയോഗിക്കുന്നു.",
+            "ചക്കമരത്തിന്റെ മരച്ചീനിയുടെ നിറം മഞ്ഞപച്ചയാണ്.",
+            "ചക്ക ഇലകൾ വലിയവയും നന്നായി നിഴൽ നൽകുന്നവയും ആണ്.",
+            "പഴത്തിന്റെ സുഗന്ധം പാകമാകുമ്പോൾ വളരെയധികം ശക്തമാകും.",
+            "ചക്കക്കുരുവിൽ ഊർജ്ജമാറ്റത്തിന് ആവശ്യമായ തിയാമിൻ, റിബോഫ്ലാവിൻ അടങ്ങിയിരിക്കുന്നു.",
+            "ചക്ക പലപ്പോഴും മദ്യപാനീയങ്ങളിൽ ഫർമെൻറുചെയ്യുന്നു.",
+            "ചക്കയുടെ തൊലി പ്രകൃതിദ്രവ്യങ്ങളുടെ നിറമിടലിന് ഉപയോഗിക്കുന്നു.",
+            "ചക്ക അധികം കഴിക്കുന്നത് വയറ്റു വേദനയ്ക്ക് കാരണമാകാം.",
+            "ചക്ക പോഷകസമ്പന്നത കൊണ്ട് സൂപ്പർഫുഡായി കണക്കാക്കപ്പെടുന്നു.",
+            "ഇളഞ്ഞ ചക്കയെ മലയാളത്തിൽ 'ഇടിച്ചക്ക' എന്നും പറയുന്നു.",
+            "ചക്ക കേരളത്തിൽ കറി, ബിരിയാണി, സ്റ്റർ ഫ്രൈ എന്നിവയിൽ ഉപയോഗിക്കുന്നു.",
+            "പഴുത്ത ചക്ക മധുരമുള്ള മധുരപലഹാരങ്ങളിൽ ഉപയോഗിക്കുന്നു.",
+            "ചക്ക ഇലകൾ ചില ആചാരങ്ങളിലും ഉപയോഗിക്കുന്നു.",
+            "ചക്കക്കുരു ഉണക്കിച്ചാൽ മാസങ്ങളോളം സൂക്ഷിക്കാം.",
+            "ചക്ക കൃഷി ജൈവകൃഷിക്ക് അനുയോജ്യമാണ്.",
+            "ചക്ക തോരൻ ഒരു ശുഷ്ക കറിയാണ്, തേങ്ങകൊണ്ട് തയ്യാറാക്കുന്നു.",
+            "ചക്ക ഗ്ലൂട്ടൻ രഹിതവും dietary fiber ൽ സമൃദ്ധവുമാണ്.",
+            "പഴത്തിന്റെ പുറം തൊലി അകറ്റി വയ്ക്കുന്നു.",
+            "ചക്കയിൽ വിറ്റാമിൻ എ ഉണ്ട്, കണ്ണിന്റെ ആരോഗ്യം സഹായിക്കുന്നു.",
+            "ചക്കപഴം വിചിത്രമായ സുഗന്ധവും രുചിയും നൽകുന്നു.",
+            "ചക്കയുടെ കുടുംബം ഫിഗ്‌സും ബ്രെഡ്ഫ്രൂട്ടും ഉൾപ്പെടുന്നു.",
+            "ചക്കമരത്തിന്റെ മരച്ചീനി ടർമൈറ്റുകൾക്ക് പ്രതിരോധ ശേഷിയുണ്ട്.",
+            "ചക്കയുടെ ചട്ടുകടല പ്രകൃതിദ്രവ്യമായി ഗ്ലൂവായി ഉപയോഗിക്കുന്നു.",
+            "ചക്കമരത്തിന് വലിയ, മിനുക്കിയ ഇലകൾ ഉണ്ട്.",
+            "ചക്കക്കുരു ആന്തരാരോഗ്യത്തിന് സഹായകമായ ഘടകങ്ങൾ അടങ്ങിയിരിക്കുന്നു.",
+            "ചക്ക കേരളത്തിലെ പരമ്പരാഗത മധുരപലഹാരങ്ങളിൽ ഉപയോഗിക്കുന്നു.",
+            "ചക്ക കൃഷി കര്‍ഷകരുടെ വരുമാനമാർഗ്ഗം വൈവിധ്യമാക്കുന്നു.",
+            "ചക്ക മധ്യവും മഴക്കാലവും ശേഖരിക്കുന്നു.",
+            "ചക്ക പഴം പച്ചയോ പാകമായോ കഴിക്കാം.",
+            "ചക്കയുടെ പഴം ദൃഢവും മസൃണവുമാണ്.",
+            "ചക്ക കാർബോഹൈഡ്രേറ്റുകളിലേറെ സമൃദ്ധമാണ്.",
+            "ചക്ക ആയുർവേദ ചികിത്സയിലും ഉപയോഗിക്കുന്നു.",
+            "ചക്ക രക്തത്തിലെ പഞ്ചസാര നിയന്ത്രണത്തിലും സഹായിക്കും.",
+            "ചക്കക്കുരു വിഷം കുറയ്ക്കാൻ പുഴുക്കേണ്ടതാണ്.",
+            "ചക്ക വിത്തുകളാൽ അല്ലെങ്കിൽ ഗ്രാഫ്റ്റിങ്ങിലൂടെ വളർത്താം.",
+            "ചക്ക പരാഗണം കീടങ്ങൾക്കും ചതുര്‍മുഖികളുമാണ്.",
+            "ചക്കമരം ചൂടും ഈർപ്പമുള്ള കാലാവസ്ഥയിൽ വളരുന്നു.",
+            "ചക്ക ആഗോളമായി വിവിധ വിഭവങ്ങളിൽ ഉപയോഗിക്കുന്നു.",
+            "ചക്ക കൃഷി ജൈവവൈവിധ്യം നിലനിർത്തുന്നു.",
+            "ചക്ക പ്രധാനമായും മാർച്ച് മുതൽ ജൂൺ വരെ ലഭ്യമാണ്.",
+            "ചക്കയുടെ രുചിയും ഘടനയും പച്ചയും പഴുത്തതും വ്യത്യസ്തമാണ്.",
+            "ചക്ക ആന്റിഓക്സിഡന്റുകളുടെ നല്ല ഉറവിടമാണ്.",
+            "ചക്കക്കുരുവിന് കടുകുചേരുന്ന രുചി ഉണ്ട്.",
+            "ചക്ക പരിസ്ഥിതിക്ക് അനുകൂലമായ കൃഷിയാണ്.",
+            "ചക്ക കേരളത്തിലെ ഉത്സവങ്ങളിൽ സാംസ്കാരിക പ്രാധാന്യമുണ്ട്.",
+            "ചക്കപഴം ഫ്രുക്ടോസ്, ഗ്ലൂക്കോസ് പോലുള്ള പഞ്ചസാരകൾ അടങ്ങിയിരിക്കുന്നു.",
+            "ചക്ക കൃഷി മണ്ണ് സംരക്ഷണത്തിന് സഹായകമാണ്.",
+            "ചക്ക കേരളത്തിൽ 'ട്രീ മട്ടൺ' എന്നറിയപ്പെടുന്നു.",
+            "ചക്ക കുഞ്ഞുങ്ങളുടെ ഭക്ഷണത്തിലും ഉപയോഗിക്കുന്നു.",
+            "ചക്കയുടെ ചട്ടുകടല ചിലർക്കു അലർജി ഉണ്ടാക്കാം.",
+            "ചക്കമരം ചെറുകാല വരണ്ട കാലാവസ്ഥ സഹിക്കുന്നു.",
+            "ചക്ക ലോകമെമ്പാടും വെഗൻ ഭക്ഷണത്തിൽ ജനപ്രിയമാണ്.",
+            "ചക്കയിൽ മഗ്നീഷ്യം, മാംഗനീസ് പോലുള്ള ധാതുക്കൾ ഉണ്ട്.",
+            "ചക്ക ഇലകൾ പശുക്കളുടെ ഓടുവിൽ ഉപയോഗിക്കുന്നു.",
+            "ചക്കപഴം പിന്നീട് ഉപയോഗിക്കാൻ ഫ്രീസ് ചെയ്യാം.",
+            "ചക്കമരത്തിന്റെ മരച്ചീനി പരമ്പരാഗത സംഗീതോപകരണങ്ങൾക്ക് ഉപയോഗിക്കുന്നു.",
+            "ചക്ക പോഷക സമൃദ്ധമായതും സാമ്പത്തികമായി മൂല്യമുള്ളതും ആണ്.",
+            "ചക്കക്കുരു പൊടിയായി കറി പാകത്തിനും ഉപയോഗിക്കുന്നു.",
+            "ചക്ക കൃഷി ഭക്ഷ്യസുരക്ഷയ്ക്ക് സംഭാവന നൽകുന്നു.",
+            "കേരളത്തിൽ ചക്കയ്ക്ക് ജിയോഗ്രാഫിക്കൽ ഇൻഡിക്കേഷൻ (GI) ടാഗ് ലഭിച്ചിട്ടുണ്ട്.",
+            "ചക്ക കേരളത്തിലെ പരമ്പരാഗത അച്ചാറുകളും വെറൈറ്റികളും ഉണ്ടാക്കുന്നു."
+        ];
+
+        // Get references to the HTML elements
+        const mainHeading = document.getElementById('mainHeading');
+        const factDisplay = document.getElementById('factDisplay');
+        const generateFactBtn = document.getElementById('generateFactBtn');
+        const toggleLanguageBtn = document.getElementById('toggleLanguageBtn');
+
+        // Variable to track the current language
+        let currentLanguage = 'en'; // 'en' for English, 'ml' for Malayalam
+
+        // Function to display a random fact based on the current language
+        function displayRandomFact() {
+            const factsToUse = currentLanguage === 'en' ? englishFacts : malayalamFacts;
+            const randomIndex = Math.floor(Math.random() * factsToUse.length);
+            factDisplay.textContent = factsToUse[randomIndex];
+        }
+
+        // Function to update UI text based on current language
+        function updateUIForLanguage() {
+            if (currentLanguage === 'en') {
+                mainHeading.textContent = "Did you know about Chakka?";
+                generateFactBtn.textContent = "New Chakka Fact";
+                toggleLanguageBtn.textContent = "ഭാഷ മാറ്റുക (Switch to Malayalam)";
+            } else {
+                mainHeading.textContent = "ചക്കയെക്കുറിച്ച് അറിയാമോ?";
+                generateFactBtn.textContent = "പുതിയ ചക്ക വിശേഷം";
+                toggleLanguageBtn.textContent = "Switch Language (ഇംഗ്ലീഷിലേക്ക് മാറുക)";
+            }
+            displayRandomFact();
+        }
+
+        // Event listeners
+        generateFactBtn.addEventListener('click', displayRandomFact);
+
+        toggleLanguageBtn.addEventListener('click', () => {
+            currentLanguage = currentLanguage === 'en' ? 'ml' : 'en';
+            updateUIForLanguage();
+        });
+
+        // Initialize on page load
+        window.addEventListener('load', updateUIForLanguage);
+    </script>
+</body>
+</html>
